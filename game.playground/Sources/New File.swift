@@ -7,9 +7,12 @@ public func initializeView(scene: SKScene) -> SKView {
 	return sceneView
 }
 
-public func makeNode(image: String, posX: Int, posY: Int, scene: SKScene) -> SKSpriteNode {
+public func makeNode(image: String, posX: Int, posY: Int, scene: SKScene, parent: SKNode? = nil) -> SKSpriteNode {
 	let newNode = SKSpriteNode(imageNamed: image)
 	newNode.position = CGPoint(x: posX, y: posY)
-	scene.addChild(newNode)
+	newNode.setScale(0.1)
+	if let par = parent {
+		par.addChild(newNode)
+	} else { scene.addChild(newNode) }
 	return newNode
 }
