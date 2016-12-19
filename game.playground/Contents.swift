@@ -1,7 +1,5 @@
 //: Playground - noun: a place where people can play
 
-import UIKit
-import UIKit
 import SpriteKit
 import XCPlayground
 
@@ -10,10 +8,10 @@ class GameScene: SKScene {
 	let nodes = (base: SKNode(),
 	             empty: SKNode())
 
-	var sensitivity = (minCur: 0.006,
+	let sensitivity = (minCur: 0.006,
 	                   maxCur: 0.85,
-	                   divCur: 6.0,
-	                   curCur: 0.2)
+	                   divCur: 6.0)
+
 
 	var time        = (lastFrame:  TimeInterval(),
 	                   delta:			 TimeInterval(),
@@ -27,7 +25,10 @@ class GameScene: SKScene {
 	}
 
 	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-		func setSensDotCur() {
+
+		func angleOffset() -> CGFloat {
+
+			// Math:
 			let x = abs(
 				touches.first!.location(in: self).x
 					- touches.first!.previousLocation(in: self).x
@@ -37,23 +38,24 @@ class GameScene: SKScene {
 			var zz = y / CGFloat(time.delta)
 			zz /= CGFloat(sensitivity.divCur)
 
+			// Logic:
 			let z = Double(zz)
-			if z > sensitivity.maxCur			 { sensitivity.curCur = sensitivity.maxCur }
-			else if z < sensitivity.minCur { sensitivity.curCur = sensitivity.minCur }
-			else { sensitivity.curCur = z }
+
+			if      z > sensitivity.maxCur { return CGFloat( sensitivity.maxCur )}
+			else if z < sensitivity.minCur { return CGFloat( sensitivity.minCur )}
+			else													 { return CGFloat ( z ) }
 		}
-		func spinClockwise() {
-			nodes.base.zRotation -= CGFloat(sensitivity.curCur)
+
+		enum ClockDirection { case wise, counterWise }
+		func spin(direction: ClockDirection) -> CGFloat {
+			if direction == .wise { return ( 0 - angleOffset() ) }
+			else									{ return ( 0 + angleOffset() ) }
 		}
-		func spinCounterClockwise() {
-			nodes.base.zRotation += CGFloat(sensitivity.curCur)
-		}
-		// Implement:
-		setSensDotCur()
+
 		touches.first!.location(in: self).x > touches.first!.previousLocation(in: self).x // Move right
-			? spinClockwise()
-			: spinCounterClockwise()
-		print(sensitivity.curCur)
+			? ( nodes.base.zRotation += spin(direction: ClockDirection.wise))
+			: ( nodes.base.zRotation += spin(direction: ClockDirection.counterWise))
+		
 	}
 
 	override func update(_ currentTime: TimeInterval) {
