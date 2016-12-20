@@ -4,11 +4,14 @@ import SpriteKit
 import XCPlayground
 import PlaygroundSupport
 
+// catNode = childNodeWithName("//cat_body") as! CatNode
+// can set multiple objects with same name
+
 
 class GameScene: SKScene {
 
 	let nodes = (base: SKNode(),
-	             empty: SKNode())
+	             ball: SKSpriteNode(color: .blue, size: CGSize(width: 35, height: 35)))
 
 	let sensitivity = (minCur: 0.006,
 	                   maxCur: 0.85,
@@ -20,7 +23,8 @@ class GameScene: SKScene {
 	                   isFirstrun: true)
 
 	override func didMove(to view: SKView) {
-		addChild(nodes.base)
+		ballConfig(ball: nodes.ball)
+		addChild(nodes.base); addChild(nodes.ball)
 	}
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -31,7 +35,12 @@ class GameScene: SKScene {
 		typealias Angle = CGFloat
 		enum ClockDirection { case wise, counterWise }
 
-		// Gives us our raw next angle:
+		secondTouch: do {
+			nodes.ball.position = touches.first!.location(in: self)
+		}
+
+		firstTouch: do {
+			// Gives us our raw next angle:
 		func angleOffset() -> Angle {
 
 			// Math:
@@ -59,9 +68,12 @@ class GameScene: SKScene {
 		}
 
 		// Logic:
+		_ = {
 		touches.first!.location(in: self).x > touches.first!.previousLocation(in: self).x // Move right
-			? ( nodes.base.zRotation += spin(direction: ClockDirection.wise))
-			: ( nodes.base.zRotation += spin(direction: ClockDirection.counterWise))
+			? ( self.nodes.base.zRotation += spin(direction: ClockDirection.wise))
+			: ( self.nodes.base.zRotation += spin(direction: ClockDirection.counterWise))
+		}
+		}
 	}
 
 	override func update(_ currentTime: TimeInterval) {
@@ -79,15 +91,20 @@ class GameScene: SKScene {
 	}
 }
 
+
 // MARK: implement:
 
 let scene = GameScene(size: CGSize(width: 320, height: 240))
-scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-scene.backgroundColor = .white
+sceneConfig(scene: scene)
 
-let (top, right, left) = (makeNode(image: "top",   posX: 0, posY: 0, scene: scene, parent: scene.nodes.base),
-                          makeNode(image: "right", posX: 0, posY: 0, scene: scene, parent: scene.nodes.base),
-                          makeNode(image: "left",  posX: 0, posY: 0, scene: scene, parent: scene.nodes.base)
+
+let (top, right, left) = (makeNode(image: "top",   posX: 0, posY: 0, scene: scene, parent: scene.nodes.base, catgegory: PhysicsCategory.cyan),
+                          makeNode(image: "right", posX: 0, posY: 0, scene: scene, parent: scene.nodes.base, catgegory: PhysicsCategory.yellow),
+                          makeNode(image: "left",  posX: 0, posY: 0, scene: scene, parent: scene.nodes.base, catgegory: PhysicsCategory.pink)
 )
 
-XCPShowView(identifier: "My Scene", view: initializeView(scene: scene))
+printPB("top ", node: top); printPB("righ", node: right); printPB("left", node: left)
+print(right.texture!)
+
+
+XCPShowView(identifier: "My Scene", view: viewConfig(scene: scene))
