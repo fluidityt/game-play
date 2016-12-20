@@ -76,6 +76,9 @@ class GameScene: SKScene {
 		}
 	}
 
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+	}
+
 	override func update(_ currentTime: TimeInterval) {
 
 		// Initial stuff:
@@ -91,20 +94,18 @@ class GameScene: SKScene {
 	}
 }
 
-
+//
+//
 // MARK: implement:
+//
+//
 
 let scene = GameScene(size: CGSize(width: 320, height: 240))
 sceneConfig(scene: scene)
 
-
 let (top, right, left) = (makeNode(image: "top",   posX: 0, posY: 0, scene: scene, parent: scene.nodes.base, catgegory: PhysicsCategory.cyan),
                           makeNode(image: "right", posX: 0, posY: 0, scene: scene, parent: scene.nodes.base, catgegory: PhysicsCategory.yellow),
                           makeNode(image: "left",  posX: 0, posY: 0, scene: scene, parent: scene.nodes.base, catgegory: PhysicsCategory.pink)
-)
-
-printPB("top ", node: top); printPB("righ", node: right); printPB("left", node: left)
-print(right.texture!)
-
+) // printPB("top ", node: top); printPB("righ", node: right); printPB("left", node: left)
 
 XCPShowView(identifier: "My Scene", view: viewConfig(scene: scene))
