@@ -6,7 +6,7 @@ public func printPB(_ name: String, node: SKNode) {
 
 public struct PhysicsCategory {
 	public static let none = UInt32(0)
-	public static let ball = UInt32(10)
+	public static let ball = UInt32(1)
 	public static let cyan = UInt32(2)
 	public static let yellow = UInt32(4)
 	public static let pink = UInt32(3)
@@ -25,6 +25,7 @@ public func makeNode(image: String, posX: Int, posY: Int, scene: SKScene, parent
 
 	let newNode = SKSpriteNode(imageNamed: image)
 
+	newNode.name = image
 	newNode.position = CGPoint(x: posX, y: posY)
 	newNode.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: image),
 	                                    alphaThreshold: 0,
@@ -33,12 +34,14 @@ public func makeNode(image: String, posX: Int, posY: Int, scene: SKScene, parent
 	newNode.physicsBody?.isDynamic = false
 	newNode.physicsBody?.usesPreciseCollisionDetection = true
 	newNode.physicsBody?.categoryBitMask = catgegory
-	newNode.physicsBody?.collisionBitMask = PhysicsCategory.none
-
+	// why doesn't this work lolllll
+	//newNode.physicsBody?.collisionBitMask = PhysicsCategory.ball
 	newNode.setScale(0.1)
+
 	if let par = parent {
 		par.addChild(newNode)
 	} else { scene.addChild(newNode) }
+
 	return newNode
 }
 
@@ -50,8 +53,6 @@ public func sceneConfig(scene: SKScene) {
 	scene.physicsBody?.usesPreciseCollisionDetection = true
 }
 
-
-
 public func ballConfig(ball: SKSpriteNode) {
 	ball.position = CGPoint(x:100,y: 50)
 	ball.physicsBody = SKPhysicsBody(rectangleOf: ball.size)
@@ -62,6 +63,5 @@ public func ballConfig(ball: SKSpriteNode) {
 	//pb.resting
 	pb.categoryBitMask = PhysicsCategory.ball
 	pb.collisionBitMask = PhysicsCategory.yellow
-	printPB("ball", node: ball)
 }
 

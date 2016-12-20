@@ -8,7 +8,7 @@ import PlaygroundSupport
 // can set multiple objects with same name
 
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
 
 	let nodes = (base: SKNode(),
 	             ball: SKSpriteNode(color: .blue, size: CGSize(width: 35, height: 35)))
@@ -25,9 +25,13 @@ class GameScene: SKScene {
 	override func didMove(to view: SKView) {
 		ballConfig(ball: nodes.ball)
 		addChild(nodes.base); addChild(nodes.ball)
+		physicsWorld.contactDelegate = self
+		nodes.ball.parent!.physicsBody!.contactTestBitMask = PhysicsCategory.ball
+
 	}
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
 	}
 
 	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -79,6 +83,18 @@ class GameScene: SKScene {
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 	}
 
+	func didBegin(_ contact: SKPhysicsContact) {
+
+		print("hi")
+		let collision = contact.bodyA.categoryBitMask
+		let collision2 = contact.bodyB.categoryBitMask
+		print(collision2)
+
+		if collision == PhysicsCategory.ball | PhysicsCategory.yellow {
+			print("ok")
+		}
+	}
+
 	override func update(_ currentTime: TimeInterval) {
 
 		// Initial stuff:
@@ -93,7 +109,6 @@ class GameScene: SKScene {
 		time.lastFrame = currentTime
 	}
 }
-
 //
 //
 // MARK: implement:
@@ -107,5 +122,7 @@ let (top, right, left) = (makeNode(image: "top",   posX: 0, posY: 0, scene: scen
                           makeNode(image: "right", posX: 0, posY: 0, scene: scene, parent: scene.nodes.base, catgegory: PhysicsCategory.yellow),
                           makeNode(image: "left",  posX: 0, posY: 0, scene: scene, parent: scene.nodes.base, catgegory: PhysicsCategory.pink)
 ) // printPB("top ", node: top); printPB("righ", node: right); printPB("left", node: left)
+
+//left.parent!.physicsBody!.contactTestBitMask = PhysicsCategory.yellow
 
 XCPShowView(identifier: "My Scene", view: viewConfig(scene: scene))
