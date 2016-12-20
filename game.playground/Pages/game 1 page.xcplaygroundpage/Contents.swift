@@ -2,6 +2,8 @@
 
 import SpriteKit
 import XCPlayground
+import PlaygroundSupport
+
 
 class GameScene: SKScene {
 
@@ -26,7 +28,11 @@ class GameScene: SKScene {
 
 	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-		func angleOffset() -> CGFloat {
+		typealias Angle = CGFloat
+		enum ClockDirection { case wise, counterWise }
+
+		// Gives us our raw next angle:
+		func angleOffset() -> Angle {
 
 			// Math:
 			let x = abs(
@@ -46,16 +52,16 @@ class GameScene: SKScene {
 			else													 { return CGFloat ( z ) }
 		}
 
-		enum ClockDirection { case wise, counterWise }
-		func spin(direction: ClockDirection) -> CGFloat {
+		// Tells us if positive or negative angle:
+		func spin(direction: ClockDirection) -> Angle {
 			if direction == .wise { return ( 0 - angleOffset() ) }
 			else									{ return ( 0 + angleOffset() ) }
 		}
 
+		// Logic:
 		touches.first!.location(in: self).x > touches.first!.previousLocation(in: self).x // Move right
 			? ( nodes.base.zRotation += spin(direction: ClockDirection.wise))
 			: ( nodes.base.zRotation += spin(direction: ClockDirection.counterWise))
-		
 	}
 
 	override func update(_ currentTime: TimeInterval) {
