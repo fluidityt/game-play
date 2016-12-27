@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<playground version='6.0' target-platform='ios' auto-termination-delay='14' display-mode='raw' executeOnSourceChanges='false'/>
+<playground version='6.0' target-platform='ios' auto-termination-delay='14' display-mode='raw'>
+    <pages>
+        <page name='physics test'/>
+        <page name='game 1 page'/>
+    </pages>
+</playground>
