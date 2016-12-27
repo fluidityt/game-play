@@ -31,9 +31,9 @@ public func makeNode(image: String, posX: Int, posY: Int, scene: SKScene, parent
 	                                    alphaThreshold: 0,
 	                                    size: SKTexture(imageNamed: image).size())
 
-	newNode.physicsBody?.isDynamic = false
-	newNode.physicsBody?.usesPreciseCollisionDetection = true
-	newNode.physicsBody?.categoryBitMask = catgegory
+	newNode.physicsBody!.isDynamic = false
+	newNode.physicsBody!.usesPreciseCollisionDetection = true
+	newNode.physicsBody!.categoryBitMask = catgegory
 	// why doesn't this work lolllll
 	//newNode.physicsBody?.collisionBitMask = PhysicsCategory.ball
 	newNode.setScale(0.1)
@@ -50,7 +50,7 @@ public func sceneConfig(scene: SKScene) {
 	scene.backgroundColor = .white
 	//	scene.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
 	scene.physicsBody = SKPhysicsBody(edgeLoopFrom: scene.frame)
-	scene.physicsBody?.usesPreciseCollisionDetection = true
+	scene.physicsBody!.usesPreciseCollisionDetection = true
 }
 
 public func ballConfig(ball: SKSpriteNode) {

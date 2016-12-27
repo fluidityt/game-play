@@ -109,6 +109,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		time.lastFrame = currentTime
 	}
 }
+
 //
 //
 // MARK: implement:
@@ -123,6 +124,5 @@ let (top, right, left) = (makeNode(image: "top",   posX: 0, posY: 0, scene: scen
                           makeNode(image: "left",  posX: 0, posY: 0, scene: scene, parent: scene.nodes.base, catgegory: PhysicsCategory.pink)
 ) // printPB("top ", node: top); printPB("righ", node: right); printPB("left", node: left)
 
-//left.parent!.physicsBody!.contactTestBitMask = PhysicsCategory.yellow
 
 XCPShowView(identifier: "My Scene", view: viewConfig(scene: scene))
